@@ -74,7 +74,7 @@ export default function Calculator() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Calculatrice</Text>
+      {/* <Text style={styles.title}>Calculatrice</Text> */}
       <Text style={styles.label}>Nom</Text>
       <Text style={styles.name}>{data.name}</Text>
 
@@ -112,7 +112,7 @@ export default function Calculator() {
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 32,
-    marginBottom: 80,
+    marginVertical: 40,
   },
   title: {
     color: "#444E59",
@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontWeight: "bold",
+    fontSize: "1.2em",
     marginBottom: 20,
   },
   description: {
