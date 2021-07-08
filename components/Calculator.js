@@ -8,102 +8,67 @@ export default function Calculator() {
     name: "Doliprane",
     description:
       "Ce médicament peut être pris indifféremment pendant ou entre les repas, en respectant un intervalle de 4 à 6 heures entre 2 prises. En cas d'insuffisance rénale, l'intervalle entre 2 prises doit être d'au moins 8 heures. Les formes dosées à 1000 mg sont réservées à l'adulte.Les comprimés et les gélules ne sont pas adaptés à l'enfant de moins de 6 ans. En effet, ils risquent d'obstruer les voies respiratoires si l'enfant déglutit mal et que le comprimé ou la gélule passe dans la trachée (fausse route). La suspension buvable peut être absorbée pure ou diluée dans de l'eau, du lait ou du jus de fruit. Le contenu des sachets doit être mélangé à une boisson (eau, lait, jus de fruits) et les comprimés effervescents doivent être dissous dans un verre d'eau.",
-    grossPurPrice: 5,
-    coeff: 0.2,
-    netPurPrice: 4,
-    netSellPrice: 5,
-    discountRate: 1,
+    grossPurPrice: 50,
+    coeff: 1.2,
+    discountRate: 0.25,
   };
 
-  const [grossPurPrice, setGrossPurPrice] = useState(data.grossPurPrice);
-  const [netPurPrice, setNetPurPrice] = useState(data.netPurPrice);
-  const [netSellPrice, setNetSellPrice] = useState(data.netSellPrice);
-  const [coeff, setCoeff] = useState(data.coeff);
-  const [discountRate, setDiscountRate] = useState(data.discountRate);
+  // const [grossPurPrice, setGrossPurPrice] = useState(data.grossPurPrice || 0);
+  const [netPurPrice, setNetPurPrice] = useState(data.netPurPrice || 0);
+  const [netSellPrice, setNetSellPrice] = useState(data.netSellPrice || 0);
+  const [coeff, setCoeff] = useState(data.coeff || 0);
+  const [discountRate, setDiscountRate] = useState(data.discountRate || 0);
+
+  const setMin = (value) => {
+    const result = parseFloat(value);
+    if (result < 0 || isNaN(result)) {
+      return 0;
+    } else {
+      return parseFloat(result.toFixed(2));
+    }
+  };
 
   // Convert
   // To net purchase price
   const toNetPurPrice = () => {
-    console.log("Net Purchase Price");
     const np = parseFloat(data.grossPurPrice * (1 - discountRate));
-    const npFixed = np.toFixed(2);
+    const npFixed = setMin(np);
     setNetPurPrice(npFixed);
+
     return npFixed;
   };
 
-    // To net selling price
+  // To net selling price
   const toNetSellPrice = () => {
-    console.log("Prix de vente net");
     const ns = parseFloat(netPurPrice * coeff);
-    const nsFixed = ns.toFixed(2);
+    const nsFixed = setMin(ns);
     setNetSellPrice(nsFixed);
     return nsFixed;
   };
 
-  const toCoeff = () => {
-    console.log("Coefficient multiplicateur");
-    const c = parseFloat(netSellPrice / netPurPrice);
-    const cFixed = c.toFixed(2);
-    setCoeff(cFixed);
-    return cFixed;
-  };
-
-  const toDiscountRate = () => {
-    console.log("Taux de remise");
-    const dr = parseFloat((1 - netPurPrice / data.grossPurPrice) * 100);
-    const drFixed = dr.toFixed(2);
-    setDiscountRate(drFixed);
-    return drFixed;
-  };
+  useEffect(() => {
+    toNetPurPrice();
+    toNetSellPrice();
+  }, [coeff, discountRate, netSellPrice, netPurPrice]);
 
   // Calc other values from this input value
-  const onGrossPurPrice = (value) => {
-    console.log("GROSS PUR PRICE");
-    setGrossPurPrice(value);
-    toNetPurPrice();
-    toDiscountRate();
-    toCoeff();
-    toNetSellPrice();
-  };
-
-  const onNetPurPrice = (value) => {
-    console.log("NET PUR PRICE");
-    setNetPurPrice(value);
-    toDiscountRate();
-    toCoeff();
-    toNetSellPrice();
-  };
-
-  const onNetSellPrice = (value) => {
-    console.log("NET SELL PRICE");
-    setNetSellPrice(value);
-    toNetPurPrice();
-    toDiscountRate();
-    toCoeff();
-  };
-
   const onCoeff = (value) => {
-    console.log("COEFF");
     setCoeff(value);
     toNetPurPrice();
     toNetSellPrice();
-    toDiscountRate();
   };
 
   const onDiscountRate = (value) => {
-    console.log("DISCOUNT RATE");
     setDiscountRate(value);
     toNetPurPrice();
     toNetSellPrice();
-    toCoeff();
   };
 
   const calculate = (name, value, convert) => {
-    name === "netPurPrice" && onNetPurPrice(value);
-    name === "netSellPrice" && setNetSellPrice(value);
-    name === "coeff" && setCoeff(value);
-    name === "discountRate" && setDiscountRate(value);
-    const output = convert(value);
+    const float = parseFloat(value);
+    name === "coeff" && setCoeff(float);
+    name === "discountRate" && setDiscountRate(float);
+    const output = convert(float);
     return output;
   };
 
@@ -113,39 +78,13 @@ export default function Calculator() {
       <Text style={styles.label}>Nom</Text>
       <Text style={styles.name}>{data.name}</Text>
 
-      {/* <Text style={styles.label}>Prix d'achat brut</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={(value) => calculate("netPurPrice", value, onGrossPurPrice)}
-        placeholder="Prix d'achat brut"
-        defaultValue={grossPurPrice}
-      /> */}
-
-      <Text style={styles.label}>Prix d'achat net</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={(value) => calculate("netPurPrice", value, onNetPurPrice)}
-        placeholder="Prix d'achat net"
-        defaultValue={netPurPrice}
-      />
-      <Text style={styles.label}>Prix de vente net</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={(value) =>
-          calculate("netSellPrice", value, onNetSellPrice)
-        }
-        placeholder="Prix de vente net"
-        value={netSellPrice}
-      />
-
       <Text style={styles.label}>Coefficient multiplicateur</Text>
       <TextInput
         style={styles.input}
         onChangeText={(value) => calculate("coeff", value, onCoeff)}
         placeholder="Coefficient multiplicateur"
-        value={coeff}
+        defaultValue={coeff || 0}
       />
-
       <Text style={styles.label}>Taux de remise en %</Text>
       <TextInput
         style={styles.input}
@@ -153,8 +92,16 @@ export default function Calculator() {
           calculate("discountRate", value, onDiscountRate)
         }
         placeholder="Taux de remise"
-        value={discountRate}
+        defaultValue={discountRate || 0}
       />
+      <View style={styles.box}>
+        <Text>Prix d'achat brut : </Text>
+        <Text style={styles.price}>{data.grossPurPrice} €</Text>
+        <Text>Prix d'achat net : </Text>
+        <Text style={styles.price}>{netPurPrice} €</Text>
+        <Text>Prix de vente : </Text>
+        <Text style={styles.price}>{netSellPrice} €</Text>
+      </View>
 
       <Text style={styles.label}>Description</Text>
       <Text style={styles.description}>{data.description}</Text>
@@ -165,6 +112,7 @@ export default function Calculator() {
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 32,
+    marginBottom: 80,
   },
   title: {
     color: "#444E59",
@@ -195,6 +143,30 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingLeft: 15,
     paddingRight: 15,
+  },
+  disabled: {
+    backgroundColor: "#f2f2f2",
+    borderColor: "#92c5de",
+    borderWidth: 1,
+    borderRadius: 10,
+    height: 40,
+    marginTop: 5,
+    marginBottom: 20,
+    paddingLeft: 15,
+    paddingRight: 15,
+  },
+  box: {
+    display: "grid",
+    gridTemplateColumns: "3fr 2fr",
+    gridRowGap: 15,
+    marginTop: 10,
+    marginBottom: 20,
+    paddingBottom: 20,
+    borderBottomColor: "#0596DE",
+    borderBottomWidth: 2,
+  },
+  price: {
+    fontWeight: "bold",
   },
   button: {
     alignItems: "center",
