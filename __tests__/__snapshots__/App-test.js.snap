@@ -1,0 +1,115 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "backgroundColor": "#EEF2F6",
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#0596DE",
+        "elevation": 3,
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "color": "#fff",
+          "fontWeight": "bold",
+          "marginBottom": 10,
+          "marginTop": 50,
+        }
+      }
+    >
+      Nivantis
+    </Text>
+  </View>
+  <View
+    style={Object {}}
+  >
+    <Text
+      style={
+        Object {
+          "color": "#444E59",
+          "fontSize": 24,
+          "fontWeight": "bold",
+          "marginBottom": 30,
+          "marginHorizontal": 32,
+          "marginTop": 30,
+          "textAlign": "center",
+        }
+      }
+    >
+      Calculatrice
+    </Text>
+    <TextInput
+      allowFontScaling={true}
+      onChangeText={[Function]}
+      placeholder="Nom du médicament"
+      rejectResponderTermination={true}
+      style={
+        Object {
+          "backgroundColor": "#fff",
+          "borderColor": "#0596DE",
+          "borderRadius": 10,
+          "borderWidth": 1,
+          "height": 40,
+          "margin": 12,
+          "marginHorizontal": 32,
+          "paddingLeft": 15,
+          "paddingRight": 15,
+        }
+      }
+      underlineColorAndroid="transparent"
+      value={null}
+    />
+    <View
+      accessible={true}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "#0596DE",
+          "borderRadius": 50,
+          "elevation": 3,
+          "justifyContent": "center",
+          "marginHorizontal": 32,
+          "marginVertical": 32,
+          "paddingHorizontal": 32,
+          "paddingVertical": 12,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "white",
+            "fontSize": 16,
+            "fontWeight": "bold",
+            "letterSpacing": 0.25,
+            "lineHeight": 21,
+          }
+        }
+      >
+        Calculer
+      </Text>
+    </View>
+  </View>
+</View>
+`;
